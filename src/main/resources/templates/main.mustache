@@ -1,10 +1,37 @@
 <!DOCTYPE HTML>
 <html lang="ru">
+
 <head>
-    <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
+
 <body>
-<div>{{some}}</div>
+
+    <div>
+        <form method="post">
+            <input type="text" name="text" placeholder="Введите сообщение" />
+            <input type="text" name="tag" placeholder="tag" />
+            <button type="submit">Добавить сообщение</button>
+        </form>
+    </div>
+
+    <div>Список сообщений</div>
+
+    <div>
+        <form method="post" action="filter">
+            <input type="text" name="filter">
+            <button type="submit">Найти</button>
+        </form>
+    </div>
+
+    {{#messages}}
+    <div>
+        <b>{{id}}</b>
+        <span>{{text}}</span>
+        <i>{{tag}}</i>
+    </div>
+    {{/messages}}
+
 </body>
+
 </html>
