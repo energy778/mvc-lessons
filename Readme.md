@@ -26,3 +26,11 @@
     * добавляем GreetingController
     * а также класс запуска приложения ServingWebContentApplication
     * и страницу greeting.html, которая просто отображает имя, переданное через get-параметр name
+
+* урок 1 (Hello, World). часть 2. замена thymeleaf на mustache
+    * изменяем dependency
+    * greeting.html на greeting.mustache
+        * убираем пространство имен thymeleaf-а
+        * изменяем шаблон вывода сообщения
+    * в контроллере вместо модели теперь используется Map<String, Object>
+    * а также добавлен обработчик для главной страницы
