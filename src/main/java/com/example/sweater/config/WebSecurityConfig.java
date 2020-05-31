@@ -1,21 +1,23 @@
 package com.example.sweater.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-
-import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private DataSource dataSource;      // генерируется спрингом
+    private final UserDetailsService userDetailsService;
+
+    public WebSecurityConfig(@Qualifier("userService") UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -36,7 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .logoutSuccessUrl("/");     // куда перенаправить после успешного логаута
     }
 
-////    deprecated - потому что нужен только для отладки (ничего нигде не хранит)
+////    deprecated - нужен только для отладки (ничего нигде не хранит)
 //    @Bean
 //    @Override
 //    public UserDetailsService userDetailsService() {
@@ -50,16 +52,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //        return new InMemoryUserDetailsManager(user);
 //    }
 
-
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication()
-                .dataSource(dataSource)                                     // чтобы менеджер мог ходить в БД и искать там роли
-                .passwordEncoder(NoOpPasswordEncoder.getInstance())         // чтобы пароли не хранились в открытом виде
-//                получаем жестко заданный системой список полей конкретного юзера
-                .usersByUsernameQuery("select username, password, active from usr where username = ?")
-//                получаем ролей пользователя
-                .authoritiesByUsernameQuery("select u.username, ur.roles from usr as u inner join user_role as ur on u.id = ur.user_id where u.username = ?");
+        auth.userDetailsService(userDetailsService)
+                .passwordEncoder(NoOpPasswordEncoder.getInstance());         // чтобы пароли не хранились в открытом виде
     }
 
 }
