@@ -7,11 +7,17 @@
 
 <body>
 
+    <form action="/logout" method="post">
+        <input type="submit" value="Выйти"/>
+        <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+    </form>
+
     <div>
-        <form method="post">
+        <form method="post" action="main">
             <input type="text" name="text" placeholder="Введите сообщение" />
             <input type="text" name="tag" placeholder="tag" />
             <button type="submit">Добавить сообщение</button>
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
         </form>
     </div>
 
@@ -21,6 +27,7 @@
         <form method="post" action="filter">
             <input type="text" name="filter">
             <button type="submit">Найти</button>
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
         </form>
     </div>
 
@@ -35,3 +42,24 @@
 </body>
 
 </html>
+
+
+<!--
+
+Чтобы отправлять AJAX запросы (ну вдруг просто кто-то захочет их внедрять), в тег <head> в common.ftl нужно добавить
+<script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<meta name="_csrf" content="${_csrf.token}"/>
+<meta name="_csrf_header" content="${_csrf.headerName}"/>
+
+<script>
+    $(function () {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        $(document).ajaxSend(function (e, xhr, options) {
+            xhr.setRequestHeader(header, token);
+        });
+    });
+</script>
+
+-->

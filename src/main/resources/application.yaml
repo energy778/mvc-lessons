@@ -7,3 +7,5 @@ spring:
     hibernate:
       ddl-auto: update
     generate-ddl: true    # структуру обслуживает Spring
+  mustache:
+    expose-request-attributes: true

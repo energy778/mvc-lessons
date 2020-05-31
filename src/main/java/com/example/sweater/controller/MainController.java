@@ -1,4 +1,4 @@
-package com.example.sweater;
+package com.example.sweater.controller;
 
 import com.example.sweater.domain.Message;
 import com.example.sweater.repo.MessageRepository;
@@ -11,28 +11,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Map;
 
 @Controller
-public class GreetingController {
+public class MainController {
 
     @Autowired
     private MessageRepository messageRepository;
 
-    @GetMapping()           // если не указывать, то по умолчанию '/'
+    @GetMapping("main")           // если не указывать, то по умолчанию '/'
     public String main(Map<String, Object> model) {
         model.put("messages", messageRepository.findAll());
         return "main";
     }
 
-    @GetMapping("greeting")
-    public String greeting(
-            @RequestParam(name="name", required=false, defaultValue="World") String name,
-            Map<String, Object> model
-    ) {
-        model.put("name", name);
+    @GetMapping()                // аналог: @GetMapping("/")
+    public String greeting(Map<String, Object> model) {
         return "greeting";
     }
 
 //    @RequestParam - выдергивает get/post параметры запроса
-    @PostMapping
+    @PostMapping("main")
     public String addMessage(@RequestParam String text,
                              @RequestParam String tag,
                              Map<String, Object> model){
@@ -42,7 +38,7 @@ public class GreetingController {
         newMessage.setTag(tag);
         messageRepository.save(newMessage);
 
-        return "redirect:";
+        return "redirect:/main";
 
     }
 
