@@ -1,22 +1,21 @@
 package com.example.sweater.config;
 
-import org.springframework.beans.factory.annotation.Qualifier;
+import com.example.sweater.service.UserService;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserDetailsService userDetailsService;
+    private final UserService userService;
 
-    public WebSecurityConfig(@Qualifier("userService") UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
+    public WebSecurityConfig(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
@@ -54,7 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService)
+        auth.userDetailsService(userService)
                 .passwordEncoder(NoOpPasswordEncoder.getInstance());         // чтобы пароли не хранились в открытом виде
     }
 

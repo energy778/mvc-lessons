@@ -19,7 +19,7 @@ public class RegistrationController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping("registration")
+    @GetMapping("/registration")
     public String registration(){
         return "registration";
     }

@@ -6,6 +6,7 @@ import com.example.sweater.repo.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,13 +16,25 @@ import java.util.Map;
 @Controller
 public class MainController {
 
-    @Autowired
-    private MessageRepository messageRepository;
+    private final MessageRepository messageRepository;
 
-    @GetMapping("main")           // если не указывать, то по умолчанию '/'
-    public String main(Map<String, Object> model) {
-        model.put("messages", messageRepository.findAll());
+    public MainController(MessageRepository messageRepository) {
+        this.messageRepository = messageRepository;
+    }
+
+    @GetMapping("/main")           // если не указывать, то по умолчанию '/'
+    public String main(@RequestParam(required = false, defaultValue = "") String filter,
+                       Model model) {
+
+        model.addAttribute("filter", filter);
+
+        if (filter != null && !filter.isEmpty())
+            model.addAttribute("messages", messageRepository.findAllByTag(filter));
+        else
+            model.addAttribute("messages", messageRepository.findAll());
+
         return "main";
+
     }
 
     @GetMapping()                // аналог: @GetMapping("/")
@@ -30,7 +43,7 @@ public class MainController {
     }
 
 //    @RequestParam - выдергивает get/post параметры запроса
-    @PostMapping("main")
+    @PostMapping("/main")
     public String addMessage(
             @AuthenticationPrincipal User user,
             @RequestParam String text,
@@ -44,20 +57,6 @@ public class MainController {
         messageRepository.save(newMessage);
 
         return "redirect:/main";
-
-    }
-
-    //    @RequestParam - выдергивает get или post параметры запроса
-    @PostMapping(value = "filter")
-    public String filter(@RequestParam String filter,
-                             Map<String, Object> model){
-
-        if (filter != null && !filter.isEmpty())
-            model.put("messages", messageRepository.findAllByTag(filter));
-        else
-            model.put("messages", messageRepository.findAll());
-
-        return "main";
 
     }
 
