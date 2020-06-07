@@ -2,8 +2,8 @@
 <#import "parts/login.ftlh" as l>
 <@c.page>
 
-<div>Hello, user</div>
-<a href="/main">Main page</a>
+<div>Всем привет</div>
+<a href="/main">Главная</a>
 
 Добавление нового пользователя
 ${message!" "}

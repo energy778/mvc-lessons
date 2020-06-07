@@ -17,6 +17,8 @@ public class Message {
     private String text;
     private String tag;
 
+    private String filename;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")           // по умолчанию было бы author_id
     private User author;

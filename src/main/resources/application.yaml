@@ -11,3 +11,10 @@ spring:
 #    expose-request-attributes: true
   freemarker:
     expose-request-attributes: true
+  servlet:
+    multipart:
+      max-file-size: 15MB
+
+upload:
+  path: /D:/projects/learning/sweater/upload-files
+#  path: D:\projects\learning\sweater\upload-files

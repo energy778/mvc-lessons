@@ -25,7 +25,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
 //                включаем авторизацию: доступ всем к greeting странице, а к остальным страницам - только авторизованным пользователям
                 .authorizeRequests()
-                    .antMatchers("/", "/registration").permitAll()
+                    .antMatchers("/",           // отдаем бесплатно без смс и регистрации: главную страницу
+                            "/registration",               // страницу регистрации
+                            "/static/**"                    // статические ресурсы
+                    ).permitAll()
                     .anyRequest().authenticated()
                 .and()
 //                указываем, что будет использоваться форма логина, путь к ней и права доступа к этой форме
