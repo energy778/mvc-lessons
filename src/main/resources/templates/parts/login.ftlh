@@ -13,6 +13,14 @@
                 <input class="form-control" type="password" name="password" placeholder="Пароль"/>
             </div>
         </div>
+        <#if isRegisterForm>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Email:</label>
+                <div class="col-sm-6">
+                    <input class="form-control" type="email" name="email" placeholder="some@some.com"/>
+                </div>
+            </div>
+        </#if>
         <button class="btn btn-primary" type="submit">
             <#if isRegisterForm>
                 Создать

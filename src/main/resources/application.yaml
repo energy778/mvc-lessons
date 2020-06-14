@@ -1,4 +1,10 @@
 spring:
+  mail:
+    host: smtp.yandex.ru
+    username: temp-mail@yandex.ru
+    password: cSFziPYsjEYd
+    port: 465
+    protocol: smtps
   datasource:
     url: jdbc:postgresql://localhost:5432/sweater
     username: postgres
@@ -7,7 +13,12 @@ spring:
     hibernate:
       ddl-auto: update
     generate-ddl: true    # структуру обслуживает Spring
-#  mustache:
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+  #  mustache:
 #    expose-request-attributes: true
   freemarker:
     expose-request-attributes: true
@@ -15,6 +26,12 @@ spring:
     multipart:
       max-file-size: 15MB
 
+mail:
+  debug: true
+
 upload:
   path: /D:/projects/learning/sweater/upload-files
 #  path: D:\projects\learning\sweater\upload-files
+app:
+  mail:
+    prefix: http://localhost:8080
