@@ -21,10 +21,16 @@
                     <a class="nav-link" href="/user">Пользователи</a>
                 </li>
             </#if>
+            <#if user??>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/profile">Редактирование профиля</a>
+                </li>
+            </#if>
         </ul>
 
         <div class="navbar-text mr-3">${name}</div>
-        <#if name != "unknown">
+        <#if user??>
+<#--        <#if name != "unknown">-->
             <@l.logout />
         </#if>
 

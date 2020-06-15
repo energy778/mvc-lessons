@@ -11,13 +11,14 @@ spring:
     password: 123
   jpa:
     hibernate:
-      ddl-auto: update
-    generate-ddl: true    # структуру обслуживает Spring
+      ddl-auto: validate
+    generate-ddl: false    # структуру обслуживает Spring
     properties:
       hibernate:
         jdbc:
           lob:
             non_contextual_creation: true
+    show-sql: false         # включаем во время отладки
   #  mustache:
 #    expose-request-attributes: true
   freemarker:
